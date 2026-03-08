@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LP Wireframe Tool</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="header__title">LP Wireframe Tool</h1>
+            <p class="header__sub">競合分析 → リテラシー分析 → LP設計 → HTML生成</p>
+        </header>
+
+        <!-- Progress Steps -->
+        <nav class="progress">
+            <div class="progress__step active" data-step="1">
+                <span class="progress__number">1</span>
+                <span class="progress__label">ポジショニング分析</span>
+            </div>
+            <div class="progress__line"></div>
+            <div class="progress__step" data-step="2">
+                <span class="progress__number">2</span>
+                <span class="progress__label">リテラシー分析</span>
+            </div>
+            <div class="progress__line"></div>
+            <div class="progress__step" data-step="3">
+                <span class="progress__number">3</span>
+                <span class="progress__label">LP設計</span>
+            </div>
+            <div class="progress__line"></div>
+            <div class="progress__step" data-step="4">
+                <span class="progress__number">4</span>
+                <span class="progress__label">生成</span>
+            </div>
+        </nav>
+
+        <!-- Step 1: 競合調査 -->
+        <section class="step-panel active" id="step-1">
+            <div class="card">
+                <h2 class="card__title">Step 1 — ポジショニング分析</h2>
+                <p class="card__desc">業界と競合LPの情報を入力してください。AIが競合の強み・弱み・差別化ポイントを分析します。</p>
+
+                <div class="form-group">
+                    <label for="industry">業界名</label>
+                    <input type="text" id="industry" placeholder="例: SaaS、飲食、不動産、美容" />
+                </div>
+                <div class="form-group">
+                    <label for="serviceName">プロダクト/サービス名</label>
+                    <input type="text" id="serviceName" placeholder="例: TaskFlow" />
+                </div>
+                <div class="form-group">
+                    <label for="competitors">競合LP情報</label>
+                    <textarea id="competitors" rows="6"
+                        placeholder="競合のLP URL、特徴、気づいたことを自由に記述&#10;&#10;例:&#10;https://example.com/lp — シンプルで信頼感あるデザイン&#10;https://rival.com — 価格訴求が強い、無料トライアル推し"></textarea>
+                </div>
+
+                <button class="btn btn--primary" id="btn-research">
+                    <span class="btn__text">競合を分析する</span>
+                    <span class="btn__loading">分析中...</span>
+                </button>
+
+                <div class="result-box" id="result-research"></div>
+            </div>
+        </section>
+
+        <!-- Step 2: リテラシー分析 -->
+        <section class="step-panel" id="step-2">
+            <div class="card">
+                <h2 class="card__title">Step 2 — 業界リテラシー分析</h2>
+                <p class="card__desc">ターゲット層の情報を入力してください。ITリテラシー・購買心理・意思決定パターンを分析します。</p>
+
+                <div class="form-group">
+                    <label for="targetAudience">ターゲット層</label>
+                    <textarea id="targetAudience" rows="3" placeholder="例: 中小企業の経営者・管理職、30〜50代、ITに詳しくない"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="serviceType">サービスの種類</label>
+                    <input type="text" id="serviceType" placeholder="例: SaaS、コンサルティング、ECサイト" />
+                </div>
+
+                <button class="btn btn--primary" id="btn-literacy">
+                    <span class="btn__text">リテラシーを分析する</span>
+                    <span class="btn__loading">分析中...</span>
+                </button>
+
+                <div class="result-box" id="result-literacy"></div>
+            </div>
+        </section>
+
+        <!-- Step 3: LP設計 -->
+        <section class="step-panel" id="step-3">
+            <div class="card">
+                <h2 class="card__title">Step 3 — LP差分分析＆構造設計</h2>
+                <p class="card__desc">クライアントの既存LPと競合を比較し、改善ポイントを分析。その上で最適なLP構造を設計します。</p>
+
+                <div class="form-group">
+                    <label for="existingLpInfo">クライアントの既存LP情報</label>
+                    <textarea id="existingLpInfo" rows="6"
+                        placeholder="既存LPのURL、現在のセクション構成、キャッチコピー等を記述&#10;&#10;例:&#10;URL: https://conne.jp&#10;ファーストビュー: 建設業界サポート20年 導入者数10万件&#10;CTA: 無料で試してみる / 資料請求&#10;セクション: 機能一覧、導入事例、料金、FAQ"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="serviceDescription">サービスの説明</label>
+                    <textarea id="serviceDescription" rows="4" placeholder="サービスの特徴、強み、解決する課題を記述"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="targetAction">期待するユーザーアクション</label>
+                    <input type="text" id="targetAction" placeholder="例: 無料トライアル登録、資料請求、問い合わせ" />
+                </div>
+
+                <button class="btn btn--primary" id="btn-structure">
+                    <span class="btn__text">差分分析＆LP案を生成する</span>
+                    <span class="btn__loading">分析・生成中...</span>
+                </button>
+
+                <div class="result-box" id="result-structure"></div>
+            </div>
+        </section>
+
+        <!-- Step 4: 生成 -->
+        <section class="step-panel" id="step-4">
+            <div class="card">
+                <h2 class="card__title">Step 4 — ワイヤーフレーム＆HTMLモック生成</h2>
+                <p class="card__desc">LP設計をもとにワイヤーフレームと完成版HTMLモックを生成します。</p>
+
+                <button class="btn btn--primary" id="btn-generate">
+                    <span class="btn__text">ワイヤーフレーム＆モックを生成する</span>
+                    <span class="btn__loading">生成中（1〜2分）...</span>
+                </button>
+
+                <div class="output-preview" id="output-preview" style="display:none;">
+                    <h3>生成結果</h3>
+                    <div class="preview-tabs">
+                        <button class="preview-tab active" data-target="wireframe">ワイヤーフレーム</button>
+                        <button class="preview-tab" data-target="mock">HTMLモック</button>
+                    </div>
+                    <div class="preview-frame-wrap">
+                        <iframe id="preview-iframe" class="preview-frame"></iframe>
+                    </div>
+                    <div class="preview-actions">
+                        <a id="link-wireframe" class="btn btn--outline" href="#" target="_blank">ワイヤーフレームを開く</a>
+                        <a id="link-mock" class="btn btn--outline" href="#" target="_blank">HTMLモックを開く</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Navigation -->
+        <div class="step-nav">
+            <button class="btn btn--ghost" id="btn-prev" style="display:none;">← 前へ</button>
+            <button class="btn btn--ghost" id="btn-next" style="display:none;">次へ →</button>
+        </div>
+    </div>
+
+    <script src="script.js?v=2"></script>
+</body>
+
+</html>

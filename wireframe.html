@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コンネLPワイヤーフレーム</title>
+    <style>
+        body {
+            font-family: -apple-system, 'Hiragino Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F8F8F8; /* Figmaアートボードの外側のグレー余白 */
+            display: flex;
+            justify-content: center;
+            padding: 50px 0; /* 上下の余白 */
+        }
+
+        .lp-artboard {
+            width: 100%;
+            max-width: 375px; /* モバイルファーストの幅 */
+            background-color: #FFFFFF;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); /* 軽い影でアートボード感 */
+            color: #333333;
+            line-height: 1.6;
+            box-sizing: border-box;
+        }
+
+        /* セクション共通スタイル */
+        .section {
+            background-color: #F5F5F5;
+            border: 1px solid #E0E0E0;
+            margin-bottom: 20px;
+            padding: 20px 15px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .section-label {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 10px;
+            color: #4A7CFF;
+            font-weight: bold;
+            background-color: #F5F5F5;
+            padding: 2px 5px;
+            border-radius: 3px;
+            z-index: 10;
+        }
+
+        .section h2 {
+            font-size: 20px;
+            margin-top: 30px; /* ラベルのスペースを確保 */
+            margin-bottom: 15px;
+            color: #333333;
+            line-height: 1.4;
+        }
+
+        .section h3 {
+            font-size: 16px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            color: #333333;
+        }
+
+        .section p {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333333;
+        }
+
+        .section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .section ul li {
+            font-size: 14px;
+            margin-bottom: 8px;
+            padding-left: 15px;
+            position: relative;
+            color: #333333;
+        }
+
+        .section ul li::before {
+            content: '•';
+            color: #4A7CFF;
+            position: absolute;
+            left: 0;
+        }
+
+        /* 画像プレースホルダ */
+        .image-placeholder {
+            background-color: #E8E8E8;
+            border: 1px dashed #B0B0B0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888888;
+            font-size: 14px;
+            text-align: center;
+            min-height: 120px;
+            margin: 15px 0;
+            box-sizing: border-box;
+            line-height: 1.3;
+        }
+
+        /* ボタン */
+        .button {
+            display: block;
+            background-color: #CCCCCC;
+            color: #333333;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 15px;
+            box-sizing: border-box;
+        }
+
+        /* CTAボタン */
+        .cta-button {
+            background-color: #4A7CFF;
+            color: #FFFFFF;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 20px;
+            box-sizing: border-box;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            width: fit-content; /* 幅をテキストに合わせる */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ナビゲーションバー */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: #FFFFFF; /* LPアートボードと同じ背景色 */
+            border-bottom: 1px solid #E0E0E0;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        .navbar .logo {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333333;
+        }
+
+        .navbar .hamburger {
+            width: 24px;
+            height: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .navbar .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #333333;
+        }
+
+        /* diff_analysisタグ */
+        .diff-tag-container {
+            display: flex;
+            justify-content: flex-end; /* 右寄せ */
+            align-items: center;
+            flex-wrap: wrap; /* 折り返し */
+            margin-bottom: 10px;
+            font-size: 11px; /* 補足テキストのフォントサイズ */
+        }
+        .diff-tag-item {
+            display: flex;
+            align-items: center;
+            margin-left: 10px; /* 各タグ間のスペース */
+            margin-bottom: 5px; /* 折り返した時の下のスペース */
+        }
+        .diff-tag {
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .diff-tag.keep {
+            background-color: #e6ffe6; /* Light Green */
+            color: #008000; /* Dark Green */
+            border: 1px solid #008000;
+        }
+
+        .diff-tag.remove {
+            background-color: #ffe6e6; /* Light Red */
+            color: #CC0000; /* Dark Red */
+            border: 1px solid #CC0000;
+        }
+
+        .diff-tag.new {
+            background-color: #ffffe6; /* Light Yellow */
+            color: #808000; /* Dark Yellow */
+            border: 1px solid #808000;
+        }
+
+        .remove-content {
+            text-decoration: line-through;
+            color: #999999;
+        }
+        
+        /* 料金プラン */
+        .pricing-plans {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .pricing-plan {
+            border: 1px solid #D0D0D0;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #FFFFFF;
+        }
+
+        .pricing-plan h3 {
+            font-size: 18px;
+            margin-top: 0;
+            color: #4A7CFF;
+        }
+
+        .pricing-plan .price {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333333;
+        }
+
+        .pricing-plan ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 10px;
+        }
+
+        .pricing-plan ul li {
+            font-size: 13px;
+            margin-bottom: 5px;
+            padding-left: 18px;
+            position: relative;
+            color: #555555;
+        }
+
+        .pricing-plan ul li::before {
+            content: '✔';
+            color: #008000;
+            position: absolute;
+            left: 0;
+            font-size: 12px;
+        }
+
+        .pricing-plan .target {
+            font-size: 12px;
+            color: #777777;
+            margin-top: 10px;
+            border-top: 1px dashed #E0E0E0;
+            padding-top: 10px;
+        }
+
+        /* FAQ */
+        .faq-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #E0E0E0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .faq-item strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #333333;
+            font-size: 14px;
+        }
+
+        .faq-item p {
+            font-size: 13px;
+            color: #555555;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        /* フッター */
+        .footer {
+            background-color: #333333;
+            color: #FFFFFF;
+            padding: 30px 15px;
+            text-align: center;
+            font-size: 12px;
+            box-sizing: border-box;
+            margin-top: 20px;
+        }
+
+        .footer .logo {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .footer ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px 15px;
+        }
+
+        .footer ul li a {
+            color: #FFFFFF;
+            text-decoration: none;
+            opacity: 0.8;
+        }
+        .footer ul li a:hover {
+            opacity: 1;
+        }
+        .footer p {
+            margin-top: 20px;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="lp-artboard">
+        <!-- ナビゲーションバー -->
+        <div class="navbar">
+            <div class="logo">CONNE</div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <!-- 01 ファーストビュー -->
+        <div class="section" id="section-01">
+            <span class="section-label">01 【ファーストビュー】</span>
+            <div class="diff-tag-container">
+                <div class="diff-tag-item">
+                    <span class="diff-tag remove">REMOVE</span> 
+                    <span class="remove-content">既存キャッチコピー</span>
+                </div>
+                <div class="diff-tag-item">
+                    <span class="diff-tag new">NEW</span> 
+                    <span>UVPを前面に出した強力なヘッドライン</span>
+                </div>
+            </div>
+            <h2 style="font-size: 24px; text-align: center; margin-bottom: 10px;">現場の『困った』を即座に解決。<br>オフィスと繋がるリアルタイム現場サポート「コンネ」</h2>
+            <p style="text-align: center; font-size: 15px; margin-bottom: 25px;">もう現場で悩まない。写真一枚、メッセージ一つでオフィスと連携。問題解決までの時間を劇的に短縮し、作業を止めない建設DXを実現します。</p>
+            <div class="image-placeholder" style="min-height: 180px;">
+                画像プレースホルダ<br>
+                建設現場の監督や作業員がスマートフォンでコンネアプリを操作し、瞬時にオフィススタッフとチャットで連携、問題解決のヒントを得ている様子。
+            </div>
+            <a href="#" class="cta-button">【14日間無料】トライアルを始める</a>
+        </div>
+
+        <!-- 02 課題提起 -->
+        <div class="section" id="section-02">
+            <span class="section-label">02 【課題提起】</span>
+            <div class="diff-tag-container">
+                <div class="diff-tag-item">
+                    <span class="diff-tag keep">KEEP</span> 
+                    <span>ターゲットのペインポイントに寄り添う構成</span>
+                </div>
+            </div>
+            <h2>建設現場で、こんなお悩み抱えていませんか？</h2>
+            <p>日々の業務で発生する「困った」が、現場の効率を下げ、働き方改革を阻害していませんか？コンネは、そうした現場のリアルな課題を解決します。</p>
+            <ul>
+                <li>現場での疑問や問題、オフィスへの確認に時間がかかり作業がストップしてしまう</li>
+                <li>図面修正や仕様変更の連絡が遅れ、手戻りや二度手間が発生する</li>
+                <li>写真や報告書、日報の作成・整理に膨大な時間がかかり残業が増えている</li>
+                <li>ベテランの知識が若手に共有されず、技術継承が進まない</li>
+                <li>紙や電話中心のアナログな情報共有で、ミスや漏れが多い</li>
+            </ul>
+        </div>
+
+        <!-- 03 コンネが叶える解決策 -->
+        <div class="section" id="section-03">
+            <span class="section-label">03 【コンネが叶える解決策】</span>
+            <div class="diff-tag-container">
+                <div class="diff-tag-item">
+                    <span class="diff-tag remove">REMOVE</span> 
+                    <span class="remove-content">リアルタイム性の訴求不足</span>
+                </div>
+                <div class="diff-tag-item">
+                    <span class="diff-tag new">NEW</span> 
+                    <span>リアルタイム連携による課題解決フローの図解</span>
+                </div>
+            </div>
+            <h2>『現場サポート コンネ』なら、その『困った』を即座に解決できます</h2>
+            <p>コンネは、単なる業務管理ツールではありません。現場とオフィス、そして専門家が密に連携し、どんな小さな問題もリアルタイムで解決へと導く「課題解決特化型」の現場サポートプラットフォームです。</p>
+            <div class="image-placeholder" style="min-height: 150px;">
+                画像プレースホルダ<br>
+                現場からスマホで問題（写真、テキスト）を投稿 → オフィスで担当者が確認・指示 → 現場で即座に問題解決、という一連の流れを分かりやすいインフォグラフィックで表現。
+            </div>
+        </div>
+
+        <!-- 04 コンネ導入で得られる３つのベネフィット -->
+        <div class="section" id="section-04">
+            <span class="section-label">04 【コンネ導入で得られる３つのベネフィット】</span>
+            <div class="diff-tag-container">
+                <div class="diff-tag-item">
+                    <span class="diff-tag keep">KEEP</span> 
+                    <span>「選ばれる理由」の核となる要素</span>
+                </div>
+            </div>
+            <h2>現場の生産性を劇的に高めるコンネの力</h2>
+            <div>
+                <h3>【時間の削減】現場の疑問がその場で解消。作業ストップを激減。</h3>
+                <p>「これで合ってる？」「どうすればいい？」現場で発生する疑問は、チャットや写真でオフィスに即共有。素早いフィードバックで、悩む時間をなくし、作業効率を大幅に向上させます。</p>
+            </div>
+            <div>
+                <h3>【ミスの撲滅】情報共有の見える化で、手戻り・二度手間ゼロへ。</h3>
+                <p>図面や指示書の最新版がいつでもどこでも確認可能。誰が、いつ、何を、どうしたかが一目瞭然。情報齟齬による手戻りをなくし、品質向上とコスト削減に貢献します。</p>
+            </div>
+            <div>
+                <h3>【働き方改革】報告書作成時間を最大50%削減。残業時間を大幅カット。</h3>
+                <p>現場で撮影した写真や入力した情報が、そのまま報告書に反映。面倒なデータ整理やPCでの入力作業から解放され、本来の業務に集中できる時間を創出。働き方改革を力強く後押しします。</p>
+            </div>
+        </div>
+
+        <!-- 05 コンネの主要機能 -->
+        <div class="section" id="section-05">
+            <span class="section-label">05 【コンネの主要機能】</span>
+            <div class="diff-tag-container">
+                <div class="diff-tag-item">
+                    <span class="diff-tag new">NEW</span> 
+                    <span>リアルタイム連携の強調（サービス紹介）</span>
+                </div>
+            </div>
+            <h2>現場とオフィスを繋ぐ、直感的な３つの機能</h2>
+            <p>ITツールに不慣れな方でも安心。現場の声を元に開発されたシンプルな操作性で、誰もがすぐに使いこなせます。</p>
+            <div>
+                <h3>リアルタイム報告・情報共有</h3>
+                <p>写真、動画、テキストで現場の状況を詳細に記録・共有。図面への書き込みやピン止め機能で、的確な指示出し・確認が可能です。過去の情報もすぐに検索・参照でき、知識の属人化を防ぎます。</p>
+                <div class="image-placeholder" style="min-height: 100px;">
+                    画像プレースホルダ<br>
+                    写真に書き込みをしているスマートフォン画面のUIイメージ。時系列で情報が流れるチャット形式の画面。
+                </div>
+            </div>
+            <div>
+                <h3>タスク・進捗管理</h3>
+                <p>誰が、いつまでに、何をすべきか明確に。タスクの進捗状況をリアルタイムで共有し、遅延リスクを早期に発見・対応できます。工程全体の『見える化』で、プロジェクトを円滑に進めます。</p>
+                <div class="image-placeholder" style="min-height: 100px;">
+                    画像プレースホルダ<br>
+                    タスクリストと進捗バー、担当者アイコンが表示されたPC画面のUIイメージ。
+                </div>
+            </div>
+            <div>
+                <h3>資料・図面管理</h3>
+                <p>図面やマニュアル、許可証などをクラウドで一元管理。現場からスマホで必要な資料を瞬時に呼び出せます。常に最新版が共有されるため、紙媒体での管理の手間や紛失リスクがなくなります。</p>
+                <div class="image-placeholder" style="min-height: 100px;">
+                    画像プレースホルダ<br>
+                    フォルダ分けされた資料リストと、開いている図面ビューアのタブレット画面のUIイメージ。
+                </div>
+            </div>
+            <a href="#" class="button">機能詳細資料をダウンロード</a>
+            <p style="text-align: center; font-size: 12px; color: #777777; margin-top: 10px;">無料トライアルで全機能をお試しいただけます</p>
+        </div>
+
+        <!-- 06 導入と運用について -->
+        <div class="section" id="section-06">
+            <span class="section-label">06 【導入と運用について】</span>
+            <div class="diff-tag-container">
+                <div class="diff-tag-item">
+                    <span class="diff-tag new">NEW</span> 
+                    <span>導入の簡単さ、学習コストの低さ</span>
+                </div>
+            </div>
+            <h2>「ITは苦手」でも大丈夫。安心の簡単導入と手厚いサポート</h2>
+            <p>コンネは、建設現場の皆様が迷わず使えることを最優先に設計されています。導入前から導入後まで、専任の担当者が徹底的にサポートいたします。</p>
+            <div>
+                <h3>誰でも直感的に使えるUI/UX</h3>
+                <p>スマートフォンアプリ感覚で使えるシンプルな画面設計。説明書いらずで、現場の誰もがすぐに操作を習得できます。特別なITスキルは一切不要です。</p>
+                <div class="image-placeholder" style="min-height: 100px;">
+                    画像プレースホルダ<br>
+                    コンネアプリの画面で、主要機能にアクセスするまでのステップを3つ程度で示す図解。または、笑顔でスマホを操作する現場作業員の写真。
+                </div>
+            </div>
+            <div>
+                <h3>専任担当者による導入サポート</h3>
+                <p>初期設定からデータの移行、現場への定着まで、お客様の状況に合わせたきめ細やかなサポートをご提供。導入計画から運用開始まで、ご不安なく進められます。</p>
+            </div>
+            <div>
+                <h3>導入後も安心の充実サポート体制</h3>
+                <p>電話、メール、オンライン会議など、お客様のご希望に合わせたサポート窓口を完備。操作方法や活用方法でお困りの際は、いつでもご相談ください。</p>
+            </div>
+        </div>
+
+        <!-- 07 導入事例・実績 -->
+        <div class="section" id="section-07">
+            <span class="section-label">07 【導入事例・実績】</span>
+            <div class="diff-tag-container">
+                <div class="diff-tag-item">
+                    <span class="diff-tag keep">KEEP</span> 
+                    <span>導入事例セクション</span>
+                </div>
+                <div class="diff-tag-item">
+                    <span class="diff-tag new">NEW</span> 
+                    <span>セキュリティ対策の明示</span>
+                </div>
+            </div>
+            <h2>現場が変わった！コンネ導入で課題を解決したお客様の声</h2>
+            <div>
+                <h3>導入事例</h3>
+                <p>【株式会社〇〇建設様（従業員30名）】<br>「情報共有の遅れで年間〇〇万円の手戻りが発生していましたが、コンネ導入後はリアルタイム連携で手戻りゼロに。報告書作成時間も20%削減でき、残業が大幅に減りました。」<br>担当者様コメント：「正直、新しいツールは不安でしたが、シンプルな操作で驚くほど早く現場に浸透しました。今ではコンネなしでは考えられません。」</p>
+                <div class="image-placeholder" style="min-height: 100px;">
+                    画像プレースホルダ<br>
+                    インタビューを受ける担当者様の写真と、Before/Afterを数値で比較したグラフ。
+                </div>
+            </div>
+            <div>
+                <h3>数値実績</h3>
+                <p>導入企業平均：情報共有のリードタイム <strong>50%短縮</strong> / 報告書作成時間 <strong>30%削減</strong> / コミュニケーションコスト <strong>25%削減</strong></p>
+                <div class="image-placeholder" style="min-height: 80px;">
+                    画像プレースホルダ<br>
+                    インフォグラフィックでこれらの数値を視覚的に示す。
+                </div>
+            </div>
+            <div>
+                <h3>セキュリティ</h3>
+                <p>お客様の大切な現場データは、業界最高水準のセキュリティ対策を施したクラウド環境で厳重に管理されます。SSL暗号化通信、データバックアップ、アクセス権限管理など、安心してお使いいただける体制です。</p>
+            </div>
+            <a href="#" class="button">導入事例集をダウンロード</a>
+            <p style="text-align: center; font-size: 12px; color: #777777; margin-top: 10px;">貴社の課題と類似する事例が見つかるかもしれません</p>
+        </div>
+
+        <!-- 08 料金 -->
+        <div class="section" id="section-08">
+            <span class="section-label">08 【料金】</span>
+            <div class="diff-tag-container">
+                <div class="diff-tag-item">
+                    <span class="diff-tag remove">REMOVE</span> 
+                    <span class="remove-content">料金体系の不明瞭さ</span>
+                </div>
+                <div class="diff-tag-item">
+                    <span class="diff-tag new">NEW</span> 
+                    <span>具体的な料金プランの明示</span>
+                </div>
+            </div>
+            <h2>シンプルで分かりやすい料金プラン</h2>
+            <p>現場の規模やご利用人数に合わせてお選びいただける、月額サブスクリプション形式です。初期費用はかかりません。無料トライアル期間を設けておりますので、まずはお気軽にお試しください。</p>
+            <div class="pricing-plans">
+                <div class="pricing-plan">
+                    <h3>ライトプラン</h3>
+                    <p class="price">月額〇〇円～</p>
+                    <ul>
+                        <li>基本的な報告・チャット機能</li>
+                        <li>データ容量〇GB</li>
+                        <li>ユーザー数～〇名</li>
+                    </ul>
+                    <p class="target">少人数の現場、まずはお試しで導入したい企業様</p>
+                </div>
+                <div class="pricing-plan">
+                    <h3>スタンダードプラン</h3>
+                    <p class="price">月額〇〇〇円～</p>
+                    <ul>
+                        <li>全機能利用可能</li>
+                        <li>データ容量〇〇GB</li>
+                        <li>ユーザー数～〇〇名</li>
+                        <li>導入サポート（ライト）</li>
+                    </ul>
+                    <p class="target">一般的な建設現場、本格的な効率化を目指す企業様</p>
+                </div>
+                <div class="pricing-plan">
+                    <h3>エンタープライズプラン</h3>
+                    <p class="price">要問い合わせ</p>
+                    <ul>
+                        <li>全機能＋個別カスタマイズ</li>
+                        <li>データ容量無制限</li>
+                        <li>ユーザー数無制限</li>
+                        <li>専任担当サポート</li>
+                    </ul>
+                    <p class="target">大規模現場、特殊な要件を持つ企業様</p>
+                </div>
+            </div>
+            <a href="#" class="button">詳しい料金プランを見る</a>
+            <p style="text-align: center; font-size: 12px; color: #777777; margin-top: 10px;">まずはお気軽にご相談ください</p>
+        </div>
+
+        <!-- 09 よくあるご質問 -->
+        <div class="section" id="section-09">
+            <span class="section-label">09 【よくあるご質問】</span>
+            <div class="diff-tag-container">
+                <div class="diff-tag-item">
+                    <span class="diff-tag keep">KEEP</span> 
+                    <span>ユーザーの疑問や懸念を事前に解消</span>
+                </div>
+            </div>
+            <h2>よくあるご質問</h2>
+            <div class="faq-item">
+                <strong>ITツールに不慣れな現場のスタッフでも使えますか？</strong>
+                <p>はい、ご安心ください。コンネはスマートフォンアプリのような直感的な操作性で、ITリテラシーに関わらず誰でも簡単に使いこなせるよう設計されています。導入時のサポートも充実しています。</p>
+            </div>
+            <div class="faq-item">
+                <strong>導入費用はどのくらいかかりますか？</strong>
+                <p>コンネは月額のサブスクリプション形式で、初期費用はかかりません。プランによって料金が異なりますので、詳細は料金ページをご確認いただくか、お気軽にお問い合わせください。</p>
+            </div>
+            <div class="faq-item">
+                <strong>無料トライアルでは何ができますか？</strong>
+                <p>14日間の無料トライアルでは、すべての機能をお試しいただけます。実際の現場で、コンネがどれだけ効率化に貢献するかをご体験ください。専任スタッフによるデモも可能です。</p>
+            </div>
+            <div class="faq-item">
+                <strong>既存の業務フローを変えずに導入できますか？</strong>
+                <p>既存の業務フローを大きく変えることなく導入できるよう、柔軟な設計をしています。導入前にしっかりとヒアリングを行い、最適な運用方法をご提案いたします。</p>
+            </div>
+            <div class="faq-item">
+                <strong>サポート体制はどのようになっていますか？</strong>
+                <p>電話、メール、オンラインでのサポートはもちろん、お客様のご要望に応じて導入時の訪問サポートも可能です。安心してご利用いただけるよう、手厚いサポート体制を整えております。</p>
+            </div>
+        </div>
+
+        <!-- 10 最終CTA -->
+        <div class="section" id="section-10" style="text-align: center;">
+            <span class="section-label">10 【最終CTA】</span>
+            <div class="diff-tag-container">
+                <div class="diff-tag-item">
+                    <span class="diff-tag new">NEW</span> 
+                    <span>無料トライアルの内容とメリット</span>
+                </div>
+                <div class="diff-tag-item">
+                    <span class="diff-tag new">NEW</span> 
+                    <span>豊富な資料請求コンテンツ</span>
+                </div>
+            </div>
+            <h2 style="font-size: 20px;">現場の『困った』を『できた！』に変えませんか？<br>今日から始める、リアルタイム現場サポート</h2>
+            <a href="#" class="cta-button">今すぐ14日間無料トライアルを始める</a>
+            <p style="font-size: 13px; color: #777777; margin-top: 15px;">資料請求も受け付けております。お気軽にご検討ください。</p>
+            <a href="#" class="button" style="width: fit-content; margin-left: auto; margin-right: auto; margin-top: 10px;">資料をダウンロードする</a>
+        </div>
+
+        <!-- フッター -->
+        <div class="footer">
+            <div class="logo">CONNE</div>
+            <ul>
+                <li><a href="#">会社概要</a></li>
+                <li><a href="#">プライバシーポリシー</a></li>
+                <li><a href="#">利用規約</a></li>
+                <li><a href="#">お問い合わせ</a></li>
+            </ul>
+            <p>&copy; 2023 CONNE. All Rights Reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

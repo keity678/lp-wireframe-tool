@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>現場の『困った』を即座に解決 | 建設現場のリアルタイムサポート「コンネ」</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-color: #0A2E4A; /* Dark Navy */
+            --secondary-color: #1F4A6A; /* Deep Blue */
+            --accent-color: #FF6B00; /* Bright Orange for CTA */
+            --background-color: #F4F7F6; /* Light Grayish Blue */
+            --text-color-dark: #333333;
+            --text-color-medium: #555555;
+            --text-color-light: #F9F9F9;
+            --border-color: #D0D0D0;
+            --header-height: 60px;
+            --spacing-large: 40px;
+            --spacing-medium: 20px;
+            --spacing-small: 10px;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--text-color-dark);
+            line-height: 1.7;
+            background-color: var(--background-color);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Noto Sans JP', sans-serif; /* Fallback to Noto Sans JP for Japanese headings */
+            line-height: 1.3;
+            margin-bottom: var(--spacing-medium);
+        }
+        h1 { font-size: 2.2em; font-weight: 700; color: var(--primary-color); }
+        h2 { font-size: 1.8em; font-weight: 700; color: var(--primary-color); }
+        h3 { font-size: 1.4em; font-weight: 700; color: var(--secondary-color); }
+
+        p {
+            font-size: 0.95em;
+            margin-bottom: var(--spacing-small);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-medium);
+        }
+
+        /* Header */
+        header {
+            background-color: #FFFFFF;
+            padding: var(--spacing-small) 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-menu {
+            display: none; /* Hidden on mobile */
+        }
+
+        .hamburger {
+            width: 30px;
+            height: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+
+        /* Utility Classes */
+        .text-center { text-align: center; }
+        .text-primary { color: var(--primary-color); }
+        .text-accent { color: var(--accent-color); }
+        .bg-primary { background-color: var(--primary-color); }
+        .bg-light { background-color: #FFFFFF; }
+        .pb-medium { padding-bottom: var(--spacing-medium); }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            font-size: 1.05em;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: var(--text-color-light);
+        }
+
+        .btn-primary:hover {
+            background-color: #e65c00; /* Darker orange */
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color-light);
+            font-size: 0.95em;
+            padding: 10px 20px;
+            box-shadow: none;
+        }
+        .btn-secondary:hover {
+            background-color: #1a3d54;
+            transform: translateY(-1px);
+        }
+
+        /* Sections */
+        section {
+            padding: var(--spacing-large) var(--spacing-medium);
+            background-color: #FFFFFF;
+            margin-bottom: var(--spacing-medium);
+            opacity: 0; /* For fade-in animation */
+            transform: translateY(20px); /* For fade-in animation */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        section.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        section:nth-child(even) {
+            background-color: var(--background-color);
+        }
+
+        /* First View */
+        #firstview {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--text-color-light);
+            text-align: center;
+            padding: 80px var(--spacing-medium) 60px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 0;
+            opacity: 1; /* Always visible */
+            transform: translateY(0); /* Always visible */
+        }
+        #firstview h1 {
+            color: #FFFFFF;
+            font-size: 2.5em;
+            margin-bottom: var(--spacing-small);
+        }
+        #firstview p {
+            font-size: 1.1em;
+            margin-bottom: var(--spacing-large);
+            color: var(--text-color-light);
+        }
+        #firstview .hero-image {
+            margin-top: var(--spacing-medium);
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Problem Section */
+        #problem ul {
+            list-style: none;
+            padding: 0;
+        }
+        #problem ul li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: var(--spacing-small);
+            font-size: 1em;
+            color: var(--text-color-medium);
+        }
+        #problem ul li::before {
+            content: '⚠';
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+            line-height: 1;
+        }
+
+        /* Solution Overview */
+        #solution_overview .flow-chart {
+            background-color: var(--background-color);
+            border-radius: 12px;
+            padding: var(--spacing-medium);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Benefits Section */
+        .benefit-item {
+            background-color: #FFFFFF;
+            padding: var(--spacing-medium);
+            border-radius: 10px;
+            margin-bottom: var(--spacing-medium);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        .benefit-item:last-child {
+            margin-bottom: 0;
+        }
+        .benefit-item h3 {
+            margin-bottom: var(--spacing-small);
+            color: var(--primary-color);
+        }
+        .benefit-item p {
+            color: var(--text-color-medium);
+        }
+
+        /* Features Section */
+        .feature-item {
+            margin-bottom: var(--spacing-large);
+            text-align: center;
+        }
+        .feature-item img {
+            margin: var(--spacing-small) auto var(--spacing-medium);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .feature-item h3 {
+            color: var(--primary-color);
+        }
+        .feature-item p {
+            color: var(--text-color-medium);
+        }
+
+        /* Ease of Use & Support */
+        .support-item {
+            margin-bottom: var(--spacing-medium);
+        }
+        .support-item h3 {
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            margin-bottom: var(--spacing-small);
+        }
+        .support-item h3::before {
+            content: '✔️'; /* Checkmark icon */
+            margin-right: var(--spacing-small);
+            color: #6BCB77; /* Lime Green */
+            font-size: 1.2em;
+        }
+        .support-item p {
+            color: var(--text-color-medium);
+        }
+        .support-item img {
+            margin-top: var(--spacing-small);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Evidence Section */
+        .evidence-block {
+            background-color: #FFFFFF;
+            padding: var(--spacing-medium);
+            border-radius: 10px;
+            margin-bottom: var(--spacing-medium);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        .evidence-block h3 {
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-small);
+        }
+        .evidence-block strong {
+            color: var(--accent-color);
+        }
+        .evidence-block img {
+            margin-top: var(--spacing-small);
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Pricing Section */
+        .pricing-plans {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-medium);
+            margin-top: var(--spacing-medium);
+        }
+        .pricing-plan {
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: var(--spacing-medium);
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .pricing-plan:hover {
+            transform: translateY(-5px);
+        }
+        .pricing-plan h3 {
+            font-size: 1.5em;
+            color: var(--primary-color);
+            margin-bottom: var(--spacing-small);
+        }
+        .pricing-plan .price {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: var(--spacing-small);
+        }
+        .pricing-plan ul {
+            text-align: left;
+            margin: 0 auto var(--spacing-small);
+            display: inline-block; /* For centering list */
+        }
+        .pricing-plan ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+            color: var(--text-color-medium);
+        }
+        .pricing-plan ul li::before {
+            content: '✓';
+            color: #6BCB77;
+            position: absolute;
+            left: 0;
+            font-weight: 700;
+        }
+        .pricing-plan .target {
+            font-size: 0.85em;
+            color: var(--text-color-medium);
+            border-top: 1px dashed var(--border-color);
+            padding-top: var(--spacing-small);
+            margin-top: var(--spacing-small);
+        }
+
+        /* FAQ Section */
+        .faq-item {
+            background-color: #FFFFFF;
+            padding: var(--spacing-small);
+            border-radius: 8px;
+            margin-bottom: var(--spacing-small);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+        }
+        .faq-item strong {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+            font-size: 1.05em;
+        }
+        .faq-item p {
+            font-size: 0.9em;
+            color: var(--text-color-medium);
+        }
+
+        /* Final CTA */
+        #final_cta {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            color: var(--text-color-light);
+            text-align: center;
+            padding: var(--spacing-large) var(--spacing-medium);
+            margin-bottom: 0;
+        }
+        #final_cta h2 {
+            color: #FFFFFF;
+            font-size: 2em;
+        }
+        #final_cta p {
+            font-size: 1em;
+            margin-top: var(--spacing-small);
+            margin-bottom: var(--spacing-medium);
+        }
+        #final_cta .btn-secondary {
+            margin-top: var(--spacing-medium);
+            background-color: #FFFFFF;
+            color: var(--primary-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        #final_cta .btn-secondary:hover {
+            background-color: var(--background-color);
+            color: var(--secondary-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-color);
+            color: var(--text-color-light);
+            padding: var(--spacing-large) var(--spacing-medium);
+            text-align: center;
+            font-size: 0.85em;
+        }
+        footer .logo {
+            color: var(--text-color-light);
+            margin-bottom: var(--spacing-medium);
+            font-size: 1.5em;
+        }
+        footer ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px 25px;
+            margin-bottom: var(--spacing-medium);
+        }
+        footer ul li a {
+            color: var(--text-color-light);
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        footer ul li a:hover {
+            opacity: 1;
+        }
+        footer p {
+            opacity: 0.6;
+            margin-top: var(--spacing-medium);
+        }
+
+        /* Responsive Design (Tablet and Desktop) */
+        @media (min-width: 768px) {
+            h1 { font-size: 3em; }
+            h2 { font-size: 2.2em; }
+            h3 { font-size: 1.6em; }
+            p { font-size: 1em; }
+
+            .container {
+                padding: 0 var(--spacing-large);
+            }
+
+            .hamburger {
+                display: none;
+            }
+
+            .nav-menu {
+                display: flex;
+                gap: var(--spacing-medium);
+            }
+            .nav-menu a {
+                font-weight: 700;
+                color: var(--primary-color);
+                padding: 5px 10px;
+                border-radius: 5px;
+                transition: background-color 0.3s ease;
+            }
+            .nav-menu a:hover {
+                background-color: var(--background-color);
+            }
+
+            #firstview {
+                padding: 120px var(--spacing-large) 80px;
+            }
+            #firstview h1 {
+                font-size: 3.5em;
+            }
+            #firstview p {
+                font-size: 1.25em;
+                max-width: 800px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            #firstview .hero-image {
+                max-width: 800px;
+            }
+
+            .grid-3-col {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: var(--spacing-medium);
+            }
+
+            .grid-2-col {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                gap: var(--spacing-medium);
+            }
+
+            .feature-item {
+                text-align: left;
+            }
+            .feature-item img {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .pricing-plans {
+                flex-direction: row;
+                justify-content: center;
+            }
+            .pricing-plan {
+                width: 30%;
+                max-width: 350px;
+            }
+            .pricing-plan ul {
+                display: block; /* Align left within plan card */
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Scroll-triggered fade-in animation
+            const sections = document.querySelectorAll('section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                    // Optional: remove 'fade-in' class when section leaves viewport
+                    // else {
+                    //     entry.target.classList.remove('fade-in');
+                    // }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.1 // 10% of the element must be visible
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container navbar">
+            <a href="#" class="logo">CONNE</a>
+            <nav class="nav-menu">
+                <a href="#problem">解決できる課題</a>
+                <a href="#features">機能</a>
+                <a href="#evidence">導入事例</a>
+                <a href="#pricing">料金</a>
+                <a href="#faq">よくある質問</a>
+                <a href="#final_cta" class="btn btn-primary">無料トライアル</a>
+            </nav>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- ファーストビュー -->
+        <section id="firstview">
+            <div class="container">
+                <h1>現場の『困った』を即座に解決。<br>オフィスと繋がるリアルタイム現場サポート「コンネ」</h1>
+                <p>もう現場で悩まない。写真一枚、メッセージ一つでオフィスと連携。問題解決までの時間を劇的に短縮し、作業を止めない建設DXを実現します。</p>
+                <img src="https://via.placeholder.com/800x450/1F4A6A/FFFFFF?text=建設現場でスマホを操作する作業員とオフィススタッフの連携イメージ" alt="建設現場でスマートフォンを操作する作業員とオフィススタッフが連携している様子" class="hero-image">
+                <a href="#final_cta" class="btn btn-primary" style="margin-top: var(--spacing-large);">【14日間無料】トライアルを始める</a>
+            </div>
+        </section>
+
+        <!-- 課題提起 -->
+        <section id="problem" class="bg-light">
+            <div class="container">
+                <h2 class="text-center">建設現場で、こんなお悩み抱えていませんか？</h2>
+                <p class="text-center pb-medium">日々の業務で発生する「困った」が、現場の効率を下げ、働き方改革を阻害していませんか？コンネは、そうした現場のリアルな課題を解決します。</p>
+                <ul>
+                    <li>現場での疑問や問題、オフィスへの確認に時間がかかり作業がストップしてしまう</li>
+                    <li>図面修正や仕様変更の連絡が遅れ、手戻りや二度手間が発生する</li>
+                    <li>写真や報告書、日報の作成・整理に膨大な時間がかかり残業が増えている</li>
+                    <li>ベテランの知識が若手に共有されず、技術継承が進まない</li>
+                    <li>紙や電話中心のアナログな情報共有で、ミスや漏れが多い</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- コンネが叶える解決策 -->
+        <section id="solution_overview">
+            <div class="container">
+                <h2 class="text-center">『現場サポート コンネ』なら、その『困った』を即座に解決できます</h2>
+                <p class="text-center pb-medium">コンネは、単なる業務管理ツールではありません。現場とオフィス、そして専門家が密に連携し、どんな小さな問題もリアルタイムで解決へと導く「課題解決特化型」の現場サポートプラットフォームです。</p>
+                <div class="flow-chart">
+                    <img src="https://via.placeholder.com/800x300/FF6B00/FFFFFF?text=現場からスマホで問題投稿+→+オフィスで確認指示+→+現場で問題解決+（インフォグラフィック）" alt="現場からスマートフォンで問題を投稿し、オフィスで確認・指示、現場で即座に問題解決するフローチャート" >
+                    <p class="text-center" style="font-size: 0.9em; color: var(--text-color-medium); margin-top: var(--spacing-small);">現場での問題を写真やテキストで共有し、迅速な解決へと導く「コンネ」のリアルタイム連携フロー</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- コンネ導入で得られる３つのベネフィット -->
+        <section id="benefit" class="bg-light">
+            <div class="container">
+                <h2 class="text-center">現場の生産性を劇的に高めるコンネの力</h2>
+                <div class="grid-3-col">
+                    <div class="benefit-item">
+                        <h3>【時間の削減】現場の疑問がその場で解消。作業ストップを激減。</h3>
+                        <p>「これで合ってる？」「どうすればいい？」現場で発生する疑問は、チャットや写真でオフィスに即共有。素早いフィードバックで、悩む時間をなくし、作業効率を大幅に向上させます。</p>
+                    </div>
+                    <div class="benefit-item">
+                        <h3>【ミスの撲滅】情報共有の見える化で、手戻り・二度手間ゼロへ。</h3>
+                        <p>図面や指示書の最新版がいつでもどこでも確認可能。誰が、いつ、何を、どうしたかが一目瞭然。情報齟齬による手戻りをなくし、品質向上とコスト削減に貢献します。</p>
+                    </div>
+                    <div class="benefit-item">
+                        <h3>【働き方改革】報告書作成時間を最大50%削減。残業時間を大幅カット。</h3>
+                        <p>現場で撮影した写真や入力した情報が、そのまま報告書に反映。面倒なデータ整理やPCでの入力作業から解放され、本来の業務に集中できる時間を創出。働き方改革を力強く後押しします。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- コンネの主要機能 -->
+        <section id="features">
+            <div class="container">
+                <h2 class="text-center">現場とオフィスを繋ぐ、直感的な３つの機能</h2>
+                <p class="text-center pb-medium">ITツールに不慣れな方でも安心。現場の声を元に開発されたシンプルな操作性で、誰もがすぐに使いこなせます。</p>
+                <div class="grid-3-col">
+                    <div class="feature-item">
+                        <h3>リアルタイム報告・情報共有</h3>
+                        <img src="https://via.placeholder.com/350x250/0A2E4A/FFFFFF?text=スマホでのチャットと写真共有UI" alt="スマートフォンでのチャットと写真共有機能のUIイメージ">
+                        <p>写真、動画、テキストで現場の状況を詳細に記録・共有。図面への書き込みやピン止め機能で、的確な指示出し・確認が可能です。過去の情報もすぐに検索・参照でき、知識の属人化を防ぎます。</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>タスク・進捗管理</h3>
+                        <img src="https://via.placeholder.com/350x250/1F4A6A/FFFFFF?text=PCでのタスク管理UI" alt="PCでのタスクリストと進捗バーのUIイメージ">
+                        <p>誰が、いつまでに、何をすべきか明確に。タスクの進捗状況をリアルタイムで共有し、遅延リスクを早期に発見・対応できます。工程全体の『見える化』で、プロジェクトを円滑に進めます。</p>
+                    </div>
+                    <div class="feature-item">
+                        <h3>資料・図面管理</h3>
+                        <img src="https://via.placeholder.com/350x250/0A2E4A/FFFFFF?text=タブレットでの図面ビューアUI" alt="タブレットでのフォルダ分けされた資料リストと開いている図面ビューアのUIイメージ">
+                        <p>図面やマニュアル、許可証などをクラウドで一元管理。現場からスマホで必要な資料を瞬時に呼び出せます。常に最新版が共有されるため、紙媒体での管理の手間や紛失リスクがなくなります。</p>
+                    </div>
+                </div>
+                <div class="text-center" style="margin-top: var(--spacing-large);">
+                    <a href="#" class="btn btn-secondary">機能詳細資料をダウンロード</a>
+                    <p style="font-size: 0.9em; color: var(--text-color-medium); margin-top: var(--spacing-small);">無料トライアルで全機能をお試しいただけます</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 導入と運用について -->
+        <section id="ease_of_use_support" class="bg-light">
+            <div class="container">
+                <h2 class="text-center">「ITは苦手」でも大丈夫。安心の簡単導入と手厚いサポート</h2>
+                <p class="text-center pb-medium">コンネは、建設現場の皆様が迷わず使えることを最優先に設計されています。導入前から導入後まで、専任の担当者が徹底的にサポートいたします。</p>
+                <div class="grid-3-col">
+                    <div class="support-item">
+                        <h3>誰でも直感的に使えるUI/UX</h3>
+                        <img src="https://via.placeholder.com/300x200/EAEAEA/555555?text=直感的なアプリ操作イメージ" alt="笑顔でスマートフォンを操作する現場作業員の写真">
+                        <p>スマートフォンアプリ感覚で使えるシンプルな画面設計。説明書いらずで、現場の誰もがすぐに操作を習得できます。特別なITスキルは一切不要です。</p>
+                    </div>
+                    <div class="support-item">
+                        <h3>専任担当者による導入サポート</h3>
+                        <img src="https://via.placeholder.com/300x200/EAEAEA/555555?text=専任担当者によるサポートイメージ" alt="オフィスでPCを使いながら顧客と話すサポート担当者の写真">
+                        <p>初期設定からデータの移行、現場への定着まで、お客様の状況に合わせたきめ細やかなサポートをご提供。導入計画から運用開始まで、ご不安なく進められます。</p>
+                    </div>
+                    <div class="support-item">
+                        <h3>導入後も安心の充実サポート体制</h3>
+                        <img src="https://via.placeholder.com/300x200/EAEAEA/555555?text=充実したサポート体制イメージ" alt="電話やオンライン会議でサポートするスタッフの様子">
+                        <p>電話、メール、オンライン会議など、お客様のご希望に合わせたサポート窓口を完備。操作方法や活用方法でお困りの際は、いつでもご相談ください。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 導入事例・実績 -->
+        <section id="evidence">
+            <div class="container">
+                <h2 class="text-center">現場が変わった！コンネ導入で課題を解決したお客様の声</h2>
+                <div class="grid-2-col">
+                    <div class="evidence-block">
+                        <h3>導入事例</h3>
+                        <p>【株式会社〇〇建設様（従業員30名）】<br>「情報共有の遅れで年間〇〇万円の手戻りが発生していましたが、コンネ導入後はリアルタイム連携で手戻りゼロに。報告書作成時間も20%削減でき、残業が大幅に減りました。」</p>
+                        <p>担当者様コメント：「正直、新しいツールは不安でしたが、シンプルな操作で驚くほど早く現場に浸透しました。今ではコンネなしでは考えられません。」</p>
+                        <img src="https://via.placeholder.com/400x250/EAEAEA/555555?text=導入企業担当者様の写真とグラフ" alt="インタビューを受ける株式会社〇〇建設担当者様とBefore/After比較グラフ">
+                    </div>
+                    <div class="evidence-block">
+                        <h3>数値実績</h3>
+                        <p>導入企業平均：情報共有のリードタイム <strong>50%短縮</strong> / 報告書作成時間 <strong>30%削減</strong> / コミュニケーションコスト <strong>25%削減</strong></p>
+                        <img src="https://via.placeholder.com/400x200/FF6B00/FFFFFF?text=導入効果のインフォグラフィック" alt="コンネ導入による数値改善を示すインフォグラフィック">
+                        <h3>セキュリティ</h3>
+                        <p>お客様の大切な現場データは、業界最高水準のセキュリティ対策を施したクラウド環境で厳重に管理されます。SSL暗号化通信、データバックアップ、アクセス権限管理など、安心してお使いいただける体制です。</p>
+                        <img src="https://via.placeholder.com/400x150/0A2E4A/FFFFFF?text=セキュリティアイコンと説明" alt="セキュリティ対策を示すアイコンと説明">
+                    </div>
+                </div>
+                <div class="text-center" style="margin-top: var(--spacing-large);">
+                    <a href="#" class="btn btn-secondary">導入事例集をダウンロード</a>
+                    <p style="font-size: 0.9em; color: var(--text-color-medium); margin-top: var(--spacing-small);">貴社の課題と類似する事例が見つかるかもしれません</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 料金 -->
+        <section id="pricing" class="bg-light">
+            <div class="container">
+                <h2 class="text-center">シンプルで分かりやすい料金プラン</h2>
+                <p class="text-center pb-medium">現場の規模やご利用人数に合わせてお選びいただける、月額サブスクリプション形式です。初期費用はかかりません。無料トライアル期間を設けておりますので、まずはお気軽にお試しください。</p>
+                <div class="pricing-plans">
+                    <div class="pricing-plan">
+                        <h3>ライトプラン</h3>
+                        <p class="price">月額〇〇円～</p>
+                        <ul>
+                            <li>基本的な報告・チャット機能</li>
+                            <li>データ容量〇GB</li>
+                            <li>ユーザー数～〇名</li>
+                        </ul>
+                        <p class="target">少人数の現場、まずはお試しで導入したい企業様</p>
+                    </div>
+                    <div class="pricing-plan">
+                        <h3>スタンダードプラン</h3>
+                        <p class="price">月額〇〇〇円～</p>
+                        <ul>
+                            <li>全機能利用可能</li>
+                            <li>データ容量〇〇GB</li>
+                            <li>ユーザー数～〇〇名</li>
+                            <li>導入サポート（ライト）</li>
+                        </ul>
+                        <p class="target">一般的な建設現場、本格的な効率化を目指す企業様</p>
+                    </div>
+                    <div class="pricing-plan">
+                        <h3>エンタープライズプラン</h3>
+                        <p class="price">要問い合わせ</p>
+                        <ul>
+                            <li>全機能＋個別カスタマイズ</li>
+                            <li>データ容量無制限</li>
+                            <li>ユーザー数無制限</li>
+                            <li>専任担当サポート</li>
+                        </ul>
+                        <p class="target">大規模現場、特殊な要件を持つ企業様</p>
+                    </div>
+                </div>
+                <div class="text-center" style="margin-top: var(--spacing-large);">
+                    <a href="#" class="btn btn-secondary">詳しい料金プランを見る</a>
+                    <p style="font-size: 0.9em; color: var(--text-color-medium); margin-top: var(--spacing-small);">まずはお気軽にご相談ください</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- よくあるご質問 -->
+        <section id="faq">
+            <div class="container">
+                <h2 class="text-center">よくあるご質問</h2>
+                <div class="faq-item">
+                    <strong>ITツールに不慣れな現場のスタッフでも使えますか？</strong>
+                    <p>はい、ご安心ください。コンネはスマートフォンアプリのような直感的な操作性で、ITリテラシーに関わらず誰でも簡単に使いこなせるよう設計されています。導入時のサポートも充実しています。</p>
+                </div>
+                <div class="faq-item">
+                    <strong>導入費用はどのくらいかかりますか？</strong>
+                    <p>コンネは月額のサブスクリプション形式で、初期費用はかかりません。プランによって料金が異なりますので、詳細は料金ページをご確認いただくか、お気軽にお問い合わせください。</p>
+                </div>
+                <div class="faq-item">
+                    <strong>無料トライアルでは何ができますか？</strong>
+                    <p>14日間の無料トライアルでは、すべての機能をお試しいただけます。実際の現場で、コンネがどれだけ効率化に貢献するかをご体験ください。専任スタッフによるデモも可能です。</p>
+                </div>
+                <div class="faq-item">
+                    <strong>既存の業務フローを変えずに導入できますか？</strong>
+                    <p>既存の業務フローを大きく変えることなく導入できるよう、柔軟な設計をしています。導入前にしっかりとヒアリングを行い、最適な運用方法をご提案いたします。</p>
+                </div>
+                <div class="faq-item">
+                    <strong>サポート体制はどのようになっていますか？</strong>
+                    <p>電話、メール、オンラインでのサポートはもちろん、お客様のご要望に応じて導入時の訪問サポートも可能です。安心してご利用いただけるよう、手厚いサポート体制を整えております。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 最終CTA -->
+        <section id="final_cta">
+            <div class="container">
+                <h2>現場の『困った』を『できた！』に変えませんか？<br>今日から始める、リアルタイム現場サポート</h2>
+                <a href="#" class="btn btn-primary" style="margin-top: var(--spacing-medium);">今すぐ14日間無料トライアルを始める</a>
+                <p>資料請求も受け付けております。お気軽にご検討ください。</p>
+                <a href="#" class="btn btn-secondary">資料をダウンロードする</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="logo">CONNE</div>
+            <ul>
+                <li><a href="#">会社概要</a></li>
+                <li><a href="#">プライバシーポリシー</a></li>
+                <li><a href="#">利用規約</a></li>
+                <li><a href="#">お問い合わせ</a></li>
+            </ul>
+            <p>&copy; 2023 CONNE. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
